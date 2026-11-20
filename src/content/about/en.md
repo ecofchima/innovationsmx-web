@@ -1,7 +1,7 @@
 ---
 lang: en
 name: Fernanda Chima
-role: Development economist · Founder, InnovationsMX
+role: Development and International Trade economist · Founder, InnovationsMX
 photo: "/images/photos/fernanda-perfil.webp"
 heroPhoto: "/images/photos/omc-ginebra.webp"
 intro: "I combine international trade, technology and six years of experience in China to help Latin American businesses source smarter and compete with confidence."
@@ -16,14 +16,14 @@ gallery:
   - { image: "/images/photos/wic-wuzhen-2025.webp", caption: "Global Youth Leader award · World Internet Conference, Wuzhen 2025" }
   - { image: "/images/photos/omc-equipo-grande.webp", caption: "With the WTO team" }
   - { image: "/images/photos/graduacion-birrete.webp", caption: "Graduating from Xi’an Jiaotong University" }
-  - { image: "/images/photos/union-europea.webp", caption: "At a European Union event" }
+  - { image: "/images/photos/union-europea.webp", caption: "At a European Union event as an Erasmus Mundus Alumni" }
   - { image: "/images/photos/comision-europea.webp", caption: "With classmates at the European Commission" }
-  - { image: "/images/photos/entrevista-radio.webp", caption: "Sharing my experience in a radio interview" }
+  - { image: "/images/photos/entrevista-radio.webp", caption: "Sharing my experience in a radio interview in Egypt" }
   - { image: "/images/photos/omc-30-equipo.webp", caption: "With the WTO team on its 30th anniversary" }
-  - { image: "/images/photos/equipo-omc.webp", caption: "With my colleagues at the WTO, Geneva" }
+  - { image: "/images/photos/equipo-omc.webp", caption: "Trade in Services and Investment Division, WTO, Geneva" }
   - { image: "/images/photos/wto-public-forum-2023.webp", caption: "WTO Public Forum, 2023" }
   - { image: "/images/photos/wto-at-30.webp", caption: "#WTOat30" }
-  - { image: "/images/photos/conferencia-economia.webp", caption: "At a conference on economics and development" }
+  - { image: "/images/photos/conferencia-economia.webp", caption: "With Indermit Gill, WBG Economist" }
 education:
   - "MSc Applied Economics · Xi'an Jiaotong University, China"
   - "MSc Economics of Globalization and European Integration · Ghent University, Belgium (Erasmus Mundus)"

@@ -6,7 +6,7 @@
 # ─────────────────────────────────────────────────────────────
 backend:
   name: github
-  repo: TU-USUARIO-GITHUB/innovationsmx-web
+  repo: ferchima/innovationsmx-web
   branch: main
   commit_messages:
     create: 'Nuevo: {{collection}} “{{slug}}”'

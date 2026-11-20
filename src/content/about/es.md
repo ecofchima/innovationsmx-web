@@ -1,7 +1,7 @@
 ---
 lang: es
 name: Fernanda Chima
-role: Economista del desarrollo · Fundadora de InnovationsMX
+role: Mtra. Economía Aplicada · Mtra. Economía de Globalización · Fundadora de InnovationsMX
 photo: "/images/photos/fernanda-perfil.webp"
 heroPhoto: "/images/photos/omc-ginebra.webp"
 intro: "Uno el comercio internacional, la tecnología y la experiencia de seis años en China para que los negocios de Latinoamérica compren mejor y compitan con más fuerza."
@@ -16,14 +16,14 @@ gallery:
   - { image: "/images/photos/wic-wuzhen-2025.webp", caption: "Reconocimiento Global Youth Leader · World Internet Conference, Wuzhen 2025" }
   - { image: "/images/photos/omc-equipo-grande.webp", caption: "Con el equipo de la OMC" }
   - { image: "/images/photos/graduacion-birrete.webp", caption: "Graduación en la Universidad Xi’an Jiaotong" }
-  - { image: "/images/photos/union-europea.webp", caption: "En un evento de la Unión Europea" }
+  - { image: "/images/photos/union-europea.webp", caption: "Alumni de la Unión Europea - Erasmus Mundus" }
   - { image: "/images/photos/comision-europea.webp", caption: "Con compañeros frente a la Comisión Europea" }
-  - { image: "/images/photos/entrevista-radio.webp", caption: "Compartiendo mi experiencia en una entrevista de radio" }
+  - { image: "/images/photos/entrevista-radio.webp", caption: "Compartiendo mi experiencia en una entrevista de radio en Egipto" }
   - { image: "/images/photos/omc-30-equipo.webp", caption: "Con el equipo de la OMC en su 30 aniversario" }
-  - { image: "/images/photos/equipo-omc.webp", caption: "Con mis compañeros en la OMC, Ginebra" }
+  - { image: "/images/photos/equipo-omc.webp", caption: "División de Servicios e Inversión en la OMC, Ginebra" }
   - { image: "/images/photos/wto-public-forum-2023.webp", caption: "Foro Público de la OMC, 2023" }
   - { image: "/images/photos/wto-at-30.webp", caption: "#WTOat30" }
-  - { image: "/images/photos/conferencia-economia.webp", caption: "En una conferencia sobre economía y desarrollo" }
+  - { image: "/images/photos/conferencia-economia.webp", caption: "Con Indermit Gill, Economista del Banco Mundial" }
 education:
   - "Maestría en Economía Aplicada · Universidad Xi'an Jiaotong, China"
   - "Maestría en Economía de la Globalización e Integración Europea · Universidad de Gante, Bélgica (Erasmus Mundus)"

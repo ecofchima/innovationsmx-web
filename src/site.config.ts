@@ -21,7 +21,7 @@ export const site = {
 
   contact: {
     // ⚠️ Replace with your real Calendly link
-    calendly: 'https://calendly.com/innovationsmx/20min',
+    calendly: 'https://calendly.com/innovationsmx-client/20min',
     whatsappNumber: '525516931100', // country code + number, no spaces or "+"
     whatsappDisplay: '+52 55 1693 1100',
     email: 'innovationsmx.client@gmail.com',

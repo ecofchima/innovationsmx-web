@@ -1,0 +1,16 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import BlogPost from '../../components/BlogPost.astro';
+import { getTranslation, postHref } from '../../lib/blog';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => !data.draft && data.lang === 'es');
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+}
+const { post } = Astro.props;
+const tr = await getTranslation(post);
+---
+<Base lang="es" title={post.data.title} description={post.data.description} image={post.data.cover ?? undefined} altHref={tr ? postHref(tr) : '/en/blog/'}>
+  <BlogPost post={post} lang="es" />
+</Base>

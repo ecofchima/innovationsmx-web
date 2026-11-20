@@ -1,0 +1,108 @@
+# ─────────────────────────────────────────────────────────────
+#  InnovationsMX blog editor — opens at  yoursite.com/admin
+#  Only YOU (the owner of the GitHub repo) can sign in and publish.
+#  ⚠️ After creating your GitHub repo, change the line "repo:" below
+#     to  your-github-username/your-repo-name
+# ─────────────────────────────────────────────────────────────
+backend:
+  name: github
+  repo: TU-USUARIO-GITHUB/innovationsmx-web
+  branch: main
+  commit_messages:
+    create: 'Nuevo: {{collection}} “{{slug}}”'
+    update: 'Editado: {{collection}} “{{slug}}”'
+    delete: 'Borrado: {{collection}} “{{slug}}”'
+
+site_url: https://innovationsmx-web.vercel.app
+display_url: https://innovationsmx-web.vercel.app
+logo_url: /favicon.png
+
+media_folder: public/images/blog
+public_folder: /images/blog
+
+collections:
+  - name: blog
+    label: Blog
+    label_singular: Artículo
+    description: 'Escribe, edita y publica artículos. Al dar “Save / Guardar” se publican en tu página en 1–2 minutos.'
+    folder: src/content/blog
+    create: true
+    slug: '{{slug}}'
+    sortable_fields: ['date', 'title']
+    summary: '{{title}} · {{lang}} · {{date | date("YYYY-MM-DD")}}'
+    fields:
+      - { label: 'Título', name: title, widget: string }
+      - { label: 'Resumen corto (aparece en la tarjeta del blog)', name: description, widget: text, required: false }
+      - { label: 'Fecha', name: date, widget: datetime, format: 'YYYY-MM-DD', time_format: false }
+      - label: 'Idioma'
+        name: lang
+        widget: select
+        default: es
+        options: [{ label: 'Español', value: es }, { label: 'English', value: en }]
+      - label: 'Categoría'
+        name: category
+        widget: select
+        default: 'Primeros pasos'
+        options: ['Comercio digital', 'Estrategia', 'Primeros pasos', 'Logística', 'Productos', 'Costos e impuestos', 'Casos reales', 'Digital trade', 'Strategy', 'First steps', 'Logistics', 'Products', 'Costs & duties', 'Case studies']
+      - { label: 'Imagen de portada (opcional; si no subes una, se crea una portada con la categoría)', name: cover, widget: image, required: false }
+      - { label: 'Clave de traducción (escribe la MISMA palabra en la versión ES y EN para conectarlas, ej. servicios-ecommerce)', name: translationKey, widget: string, required: false }
+      - { label: 'Destacado (aparece grande en la portada)', name: featured, widget: boolean, default: false }
+      - { label: 'Borrador (no se publica todavía)', name: draft, widget: boolean, default: false }
+      - { label: 'Contenido', name: body, widget: markdown }
+
+  - name: testimonials
+    label: Testimonios
+    label_singular: Testimonio
+    description: 'La sección de testimonios aparece en la página cuando publicas el primero.'
+    folder: src/content/testimonials
+    create: true
+    identifier_field: name
+    slug: '{{slug}}'
+    media_folder: /public/images/testimonials
+    public_folder: /images/testimonials
+    summary: '{{name}} · {{business}}'
+    fields:
+      - { label: 'Nombre', name: name, widget: string }
+      - { label: 'Negocio (ej. Zapatería en mercado)', name: business, widget: string, required: false }
+      - { label: 'Ciudad / País', name: city, widget: string, required: false }
+      - { label: 'Foto', name: photo, widget: image, required: false }
+      - { label: 'Testimonio en español', name: quote_es, widget: text }
+      - { label: 'Testimonio en inglés (opcional)', name: quote_en, widget: text, required: false }
+      - { label: 'Orden (1 = primero)', name: order, widget: number, default: 1, value_type: int }
+      - { label: 'Publicado', name: published, widget: boolean, default: true }
+      - { label: 'Notas internas', name: body, widget: markdown, required: false }
+
+  - name: about
+    label: Sobre mí
+    description: 'Tu presentación en la página “Sobre mí / About”. Sube aquí tu foto.'
+    files:
+      - name: es
+        label: Sobre mí (Español)
+        file: src/content/about/es.md
+        fields: &aboutFields
+          - { label: 'Idioma (no cambiar)', name: lang, widget: hidden }
+          - { label: 'Nombre', name: name, widget: string }
+          - { label: 'Cargo / título', name: role, widget: string }
+          - { label: 'Foto pequeña (retrato, cuadrada)', name: photo, widget: image, required: false, media_folder: /public/images/about, public_folder: /images/about }
+          - { label: 'Foto grande de la página Sobre mí', name: heroPhoto, widget: image, required: false, media_folder: /public/images/about, public_folder: /images/about }
+          - { label: 'Frase de introducción', name: intro, widget: text }
+          - label: 'Trayectoria (línea de tiempo)'
+            name: highlights
+            widget: list
+            fields:
+              - { label: 'Etiqueta (año o lugar)', name: label, widget: string }
+              - { label: 'Título', name: title, widget: string }
+              - { label: 'Texto', name: text, widget: text }
+          - label: 'Galería de momentos'
+            name: gallery
+            widget: list
+            fields:
+              - { label: 'Foto', name: image, widget: image, media_folder: /public/images/about, public_folder: /images/about }
+              - { label: 'Pie de foto', name: caption, widget: string }
+          - { label: 'Formación', name: education, widget: list, field: { label: 'Título', name: item, widget: string } }
+          - { label: 'Reconocimientos', name: recognitions, widget: list, field: { label: 'Reconocimiento', name: item, widget: string } }
+          - { label: 'Mi historia', name: body, widget: markdown }
+      - name: en
+        label: About (English)
+        file: src/content/about/en.md
+        fields: *aboutFields

@@ -1,0 +1,151 @@
+---
+import { getCollection } from 'astro:content';
+import Icon from './Icon.astro';
+import { ui, type Lang } from '../i18n/ui';
+import { site, whatsappLink } from '../site.config';
+import { human } from '../i18n/human';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = ui[lang];
+const c = t.clients;
+const es = lang === 'es';
+const h = human[lang];
+const testimonials = (await getCollection('testimonials', ({ data }) => data.published)).sort((a, b) => a.data.order - b.data.order);
+---
+<section class="c-hero">
+  <div class="container">
+    <span class="kicker">{c.kicker}</span>
+    <h1>{c.title}</h1>
+    <p class="lead">{c.sub}</p>
+  </div>
+</section>
+
+<section class="section" style="padding-top:20px">
+  <div class="container">
+    <div class="segs">
+      {c.segments.map((s, i) => (
+        <article class="seg reveal">
+          <span class="seg-n">0{i + 1}</span>
+          <span class="ic-box"><Icon name={s.icon} size={28} /></span>
+          <h3>{s.title}</h3>
+          <p>{s.text}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<section class="section section--alt">
+  <div class="container">
+    <div class="section-head center reveal">
+      <span class="kicker">{c.howKicker}</span>
+      <h2>{c.howTitle}</h2>
+    </div>
+    <ol class="how">
+      {c.how.map((h, i) => (
+        <li class="reveal"><span class="n">{i + 1}</span><b>{h.title}</b><p>{h.text}</p></li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head center reveal"><h2>{testimonials.length ? c.testiTitle : h.fears.title}</h2></div>
+    {testimonials.length > 0 ? (
+      <div class="testis">
+        {testimonials.map((x) => (
+          <figure class="testi reveal">
+            <Icon name="quote" size={28} class="q" />
+            <blockquote>{!es && x.data.quote_en ? x.data.quote_en : x.data.quote_es}</blockquote>
+            <figcaption>
+              {x.data.photo ? <img src={x.data.photo} alt="" width="52" height="52" loading="lazy" /> : <span class="ini">{x.data.name.charAt(0)}</span>}
+              <span><b>{x.data.name}</b><small>{[x.data.business, x.data.city].filter(Boolean).join(' · ')}</small></span>
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+    ) : (
+      <>
+        <div class="fears">
+          {h.fears.items.map((f) => (
+            <div class="fear reveal"><p class="fq">“{f.q}”</p><p class="fa"><Icon name="check" size={20} /> {f.a}</p></div>
+          ))}
+        </div>
+        <p class="empty reveal"><Icon name="users" size={24} /> {c.testiEmpty}</p>
+      </>
+    )}
+
+    <div class="ship reveal">
+      <b>{t.quote.shipTitle}</b>
+      <span>🇲🇽 {t.quote.main}</span><span>🇵🇪 {t.quote.list[0]}</span><span>🇨🇴 {t.quote.list[1]}</span><span>🇵🇦 {t.quote.list[2]}</span><span>🇨🇱 {t.quote.list[3]}</span>
+      <small><Icon name="globe" size={14} /> {t.quote.far}</small>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="padding-top:0">
+  <div class="container">
+    <div class="box reveal">
+      <div><h2>{c.ctaTitle}</h2><p>{c.ctaText}</p></div>
+      <div class="btn-row">
+        <a class="btn btn-orange" href={site.tools.solicitud} target="_blank" rel="noopener"><Icon name="box" /> {t.quote.cta}</a>
+        <a class="btn btn-ghost" href={site.contact.calendly} target="_blank" rel="noopener"><Icon name="calendar" /> {t.bookCall}</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .c-hero { position: relative; overflow: hidden; margin-top: -72px; padding: calc(72px + clamp(48px, 7vw, 90px)) 0 40px;
+    background: radial-gradient(600px 300px at 85% 0%, rgba(255,122,31,.15), transparent 70%), radial-gradient(600px 300px at 5% 10%, rgba(41,182,255,.13), transparent 70%); }
+  .c-hero .container { position: relative; }
+  .c-hero h1 { max-width: 900px; text-wrap: balance; margin-bottom: 16px; }
+  .ic-box { display: inline-grid; place-items: center; width: 56px; height: 56px; border-radius: 16px; color: var(--kraft); background: radial-gradient(circle at 50% 70%, rgba(255,160,60,.32), rgba(255,122,31,.05)); border: 1px solid rgba(255,122,31,.3); }
+  .segs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+  .seg { position: relative; padding: 32px; border-radius: var(--radius); background: linear-gradient(180deg, var(--surface-2), var(--surface)); border: 1px solid var(--line); }
+  .seg-n { position: absolute; top: 28px; right: 30px; font-family: var(--font-display); font-weight: 700; color: rgba(166,179,201,.4); }
+  .seg h3 { margin: 20px 0 8px; font-size: 1.35rem; }
+  .seg p { margin: 0; color: var(--muted); }
+  @media (max-width: 760px) { .segs { grid-template-columns: 1fr; } .seg { padding: 26px; } }
+  .how { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; }
+  .how li { padding: 26px; border-radius: var(--radius); background: var(--surface); border: 1px solid var(--line); }
+  .how .n { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 50%; margin-bottom: 16px; font-family: var(--font-display); font-weight: 800; background: var(--grad); color: #050914; }
+  .how b { display: block; font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 6px; }
+  .how p { margin: 0; color: var(--muted); font-size: 1rem; }
+  @media (max-width: 960px) { .how { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 520px) { .how { grid-template-columns: 1fr; } }
+  .testis { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+  .testi { margin: 0; padding: 28px; border-radius: var(--radius); background: var(--surface); border: 1px solid var(--line); display: flex; flex-direction: column; }
+  .testi :global(.q) { color: var(--orange); margin-bottom: 10px; }
+  .testi blockquote { margin: 0 0 20px; font-family: var(--font-serif); font-size: 1.15rem; line-height: 1.6; flex: 1; }
+  .testi figcaption { display: flex; gap: 12px; align-items: center; }
+  .testi img, .ini { width: 52px; height: 52px; border-radius: 50%; object-fit: cover; border: 2px solid var(--cyan); }
+  .ini { display: grid; place-items: center; font-weight: 800; background: var(--surface-2); }
+  .testi b { display: block; } .testi small { color: var(--muted); }
+  .empty { display: flex; justify-content: center; align-items: center; gap: 12px; padding: 34px; border-radius: var(--radius); border: 1.5px dashed var(--line-strong); color: var(--muted); text-align: center; flex-wrap: wrap; }
+  .empty :global(svg) { color: var(--cyan); }
+  .parents { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: clamp(28px, 5vw, 64px); align-items: center; padding: clamp(24px, 4vw, 44px); border-radius: 24px;
+    background: radial-gradient(600px 300px at 0% 0%, rgba(216,178,122,.16), transparent 70%), var(--surface); border: 1px solid rgba(216,178,122,.25); }
+  .parents figure { margin: 0; padding: 10px 10px 0; background: #f4ece0; border-radius: 6px; transform: rotate(-1.5deg); box-shadow: 0 20px 40px -20px rgba(0,0,0,.8); }
+  .parents img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+  .parents figcaption { font-family: var(--font-hand); font-size: 1.25rem; color: #3a2a1a; padding: 8px 4px 10px; }
+  .parents .kicker { color: var(--kraft); }
+  .parents p { color: #d3d9e4; font-family: var(--font-serif); font-size: 1.15rem; line-height: 1.65; }
+  .parents .sig { font-family: var(--font-hand); font-size: 2rem; color: #ffcf9e; margin: 0; }
+  @media (max-width: 800px) { .parents { grid-template-columns: 1fr; } }
+  .fears { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; margin-bottom: 24px; }
+  .fear { display: flex; flex-direction: column; justify-content: space-between; gap: 16px; padding: 24px; border-radius: var(--radius); background: var(--surface); border: 1px solid var(--line); }
+  .fq { margin: 0; font-family: var(--font-serif); font-style: italic; font-size: 1.15rem; color: #fff; }
+  .fa { margin: 0; display: flex; gap: 10px; color: var(--muted); font-size: 0.98rem; padding-top: 14px; border-top: 1px dashed var(--line-strong); }
+  .fa :global(svg) { color: var(--wa); flex: none; }
+  .ship { margin-top: 40px; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px 14px; }
+  .ship b { color: var(--muted); font-size: 0.85rem; letter-spacing: 0.12em; text-transform: uppercase; width: 100%; text-align: center; }
+  .ship span { padding: 8px 16px; border-radius: 999px; border: 1px solid var(--line-strong); background: var(--surface); font-weight: 600; }
+  .ship span:first-of-type { border-color: var(--cyan); background: rgba(41,182,255,.1); }
+  .ship small { width: 100%; text-align: center; color: var(--muted); display: flex; justify-content: center; align-items: center; gap: 6px; }
+  .box { display: flex; justify-content: space-between; align-items: center; gap: 24px; flex-wrap: wrap; padding: clamp(28px, 4vw, 44px); border-radius: 24px; background: linear-gradient(90deg, rgba(41,182,255,.12), rgba(255,122,31,.12)); border: 1px solid var(--line-strong); }
+  .box h2 { font-size: clamp(1.6rem, 3vw, 2.2rem); margin-bottom: 6px; }
+  .box p { margin: 0; color: #c5d0e2; }
+</style>

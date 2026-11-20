@@ -1,0 +1,187 @@
+---
+import Icon from './Icon.astro';
+import { ui, type Lang } from '../i18n/ui';
+import { mission, missionLinks } from '../i18n/mission';
+import { site, whatsappLink } from '../site.config';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = ui[lang];
+const m = mission[lang];
+const wa = whatsappLink(m.waMsg);
+---
+<section class="m-hero">
+  <div class="container m-grid">
+    <div>
+      <span class="kicker">{m.kicker}</span>
+      <h1>{m.title}</h1>
+      <p class="lead">{m.sub}</p>
+      <div class="next-card">
+        <span class="nc-label">{m.next}</span>
+        <b class="nc-date">{m.dates}</b>
+        <ul>
+          <li><Icon name="calendar" size={18} /> {m.phase}</li>
+          <li><Icon name="pin" size={18} /> {m.cities}</li>
+          <li><Icon name="users" size={18} /> {m.seats}</li>
+        </ul>
+        <div class="btn-row">
+          <a class="btn btn-orange" href={wa} target="_blank" rel="noopener"><Icon name="whatsapp" /> {m.cta}</a>
+          <a class="btn btn-ghost" href={site.contact.calendly} target="_blank" rel="noopener"><Icon name="calendar" /> {m.ctaInfo}</a>
+        </div>
+      </div>
+    </div>
+    <figure class="m-photo">
+      <span class="hp-ring" aria-hidden="true"></span>
+      <img src="/images/mision/acuerdo-canton-fair.webp" alt={m.gallery[0].caption} width="899" height="1599" />
+      <figcaption>{m.gallery[0].caption}</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="section section--alt">
+  <div class="container two">
+    <div class="reveal">
+      <span class="kicker">{m.itineraryTitle}</span>
+      <ol class="itin">
+        {m.itinerary.map((d) => (
+          <li><span class="d">{d.day}</span><div><b>{d.title}</b><p>{d.text}</p></div></li>
+        ))}
+      </ol>
+      <p class="note">{m.itineraryNote}</p>
+    </div>
+    <div class="side">
+      <div class="box reveal">
+        <h3>{m.sectorsTitle}</h3>
+        <div class="chips">{m.sectors.map((x) => <span>{x}</span>)}</div>
+        <p class="note">{m.sectorsNote}</p>
+      </div>
+      <div class="box reveal">
+        <h3>{m.includesTitle}</h3>
+        <ul class="checks">{m.includes.map((x) => <li><Icon name="check" size={18} /> {x}</li>)}</ul>
+        <div class="price">
+          <small>{m.price}</small>
+          <b>{missionLinks.priceApril || m.priceTbd}</b>
+          <p class="note">{m.priceRef}</p>
+        </div>
+      </div>
+      <div class="box reveal">
+        <h3>{m.reqTitle}</h3>
+        <ul class="reqs">{m.reqs.map((x) => <li>{x}</li>)}</ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section past">
+  <div class="container">
+    <div class="head reveal">
+      <div>
+        <span class="kicker">{m.pastKicker}</span>
+        <h2>{m.pastTitle}</h2>
+        <p class="lead">{m.pastSub}</p>
+      </div>
+      <a class="btn btn-ghost" href={missionLinks.pastSite} target="_blank" rel="noopener">{m.pastLink} <Icon name="external" size={18} /></a>
+    </div>
+    <div class="gal">
+      {m.gallery.slice(1).map((g) => (
+        <figure class="g reveal"><img src={g.src} alt={g.caption} loading="lazy" /><figcaption>{g.caption}</figcaption></figure>
+      ))}
+    </div>
+  </div>
+</section>
+
+<section class="section section--alt">
+  <div class="container two">
+    <div class="reveal">
+      <span class="kicker">Kern Grosse × InnovationsMX</span>
+      <h2>{m.partnerTitle}</h2>
+      <p class="lead">{m.partnerText}</p>
+      <a class="btn btn-ghost" href={missionLinks.partner} target="_blank" rel="noopener">kerngrosse.com.mx <Icon name="external" size={18} /></a>
+    </div>
+    <div class="faq reveal">
+      <h3>{m.faqTitle}</h3>
+      {m.faq.map((f) => <details><summary>{f.q}<Icon name="plus" size={20} /></summary><p>{f.a}</p></details>)}
+    </div>
+  </div>
+</section>
+
+<section class="section" style="padding-top:clamp(48px,6vw,72px)">
+  <div class="container">
+    <div class="end reveal">
+      <img src="/images/photos/fernanda-perfil.webp" alt="Fernanda Chima" width="88" height="88" />
+      <div><h2>{m.dates}</h2><p>{m.phase} · {m.cities}</p></div>
+      <div class="btn-row">
+        <a class="btn btn-wa" href={wa} target="_blank" rel="noopener"><Icon name="whatsapp" /> {m.cta}</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .m-hero { position: relative; overflow: hidden; margin-top: -72px; padding: calc(72px + clamp(32px, 6vw, 72px)) 0 clamp(48px, 6vw, 80px);
+    background: radial-gradient(700px 420px at 85% 30%, rgba(255,122,31,.18), transparent 70%), radial-gradient(700px 500px at 5% 15%, rgba(41,182,255,.13), transparent 70%); }
+  .m-grid { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: clamp(32px, 5vw, 64px); align-items: center; }
+  .m-hero h1 { font-size: clamp(2.2rem, 4.6vw, 3.5rem); text-wrap: balance; }
+  .m-hero .lead { margin-bottom: 28px; color: #c9d3e3; }
+  .next-card { padding: 24px; border-radius: 20px; background: rgba(12,21,40,.85); border: 1px solid rgba(255,122,31,.4); box-shadow: 0 20px 50px -25px rgba(255,122,31,.5); }
+  .nc-label { font-size: .8rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #ffa060; }
+  .nc-date { display: block; font-family: var(--font-display); font-size: clamp(1.6rem, 3vw, 2.2rem); margin: 4px 0 12px; }
+  .next-card ul { list-style: none; padding: 0; margin: 0 0 20px; display: grid; gap: 6px; color: #cfd8e8; font-size: 1rem; }
+  .next-card li { display: flex; gap: 8px; align-items: center; }
+  .next-card li :global(svg) { color: var(--cyan); flex: none; }
+  .m-photo { position: relative; margin: 0; justify-self: center; width: min(400px, 100%); }
+  .m-photo img { position: relative; width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; object-position: 50% 45%; border-radius: 26px; }
+  .hp-ring { position: absolute; inset: -9px; border-radius: 32px; background: conic-gradient(from 200deg, var(--cyan) 0 45%, var(--orange) 55% 100%); }
+  .m-photo figcaption { position: absolute; left: 14px; right: 14px; bottom: 14px; padding: 8px 14px; border-radius: 12px; background: rgba(5,9,20,.8); font-family: var(--font-hand); font-size: 1.3rem; line-height: 1.15; color: #ffe1c4; }
+  @media (max-width: 900px) { .m-grid { grid-template-columns: 1fr; } .m-photo { order: -1; width: 100%; max-width: 520px; } .m-photo img { aspect-ratio: 5 / 4; } }
+  @media (max-width: 600px) { .btn-row .btn { flex: 1 1 100%; } }
+
+  .two { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: clamp(28px, 5vw, 64px); align-items: start; }
+  @media (max-width: 900px) { .two { grid-template-columns: 1fr; } }
+  .itin { list-style: none; margin: 8px 0 0; padding: 0 0 0 4px; position: relative; }
+  .itin::before { content: ''; position: absolute; left: 52px; top: 10px; bottom: 10px; width: 2px; background: linear-gradient(var(--cyan), var(--orange)); opacity: .5; }
+  .itin li { position: relative; display: grid; grid-template-columns: 100px 1fr; gap: 18px; padding: 14px 0; }
+  .itin .d { justify-self: center; align-self: start; position: relative; z-index: 1; padding: 6px 10px; border-radius: 999px; background: var(--bg-2); border: 1.5px solid var(--line-strong); font-weight: 700; font-size: .85rem; white-space: nowrap; }
+  .itin li:nth-child(3) .d, .itin li:nth-child(4) .d { border-color: var(--orange); color: #ffb27a; }
+  .itin b { display: block; font-family: var(--font-display); font-size: 1.15rem; }
+  .itin p { margin: 2px 0 0; color: var(--muted); font-size: 1rem; }
+  .note { color: var(--muted); font-size: .9rem; margin-top: 10px; }
+  .side { display: grid; gap: 18px; }
+  .box { padding: 24px; border-radius: var(--radius); background: var(--surface); border: 1px solid var(--line); }
+  .box h3 { font-size: 1.2rem; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chips span { padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line-strong); font-size: .92rem; color: #cfd8e8; }
+  .checks { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; font-size: 1rem; }
+  .checks li { display: flex; gap: 10px; align-items: flex-start; }
+  .checks :global(svg) { color: var(--orange); flex: none; margin-top: 4px; }
+  .price { margin-top: 18px; padding-top: 16px; border-top: 1px dashed var(--line-strong); }
+  .price small { color: var(--muted); font-size: .85rem; text-transform: uppercase; letter-spacing: .1em; }
+  .price b { display: block; font-family: var(--font-display); font-size: 1.2rem; color: #ffa060; margin-top: 2px; }
+  .reqs { margin: 0; padding-left: 1.1em; display: grid; gap: 8px; color: #cfd8e8; font-size: 1rem; }
+  .reqs li::marker { color: var(--cyan); }
+
+  .past { background: radial-gradient(900px 500px at 15% 0%, rgba(216,178,122,.12), transparent 65%), #0a0b12; border-block: 1px solid rgba(216,178,122,.18); }
+  .past .kicker { color: var(--kraft); }
+  .head { display: flex; justify-content: space-between; align-items: end; gap: 24px; flex-wrap: wrap; margin-bottom: 36px; }
+  .head .lead { margin: 0; }
+  .gal { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 22px; }
+  .g { margin: 0; padding: 10px 10px 0; background: #f4ece0; border-radius: 6px; box-shadow: 0 18px 36px -20px rgba(0,0,0,.8); transition: transform .3s; }
+  .g:nth-child(3n+1) { transform: rotate(-.9deg); } .g:nth-child(3n+2) { transform: rotate(.8deg); }
+  .g:hover { transform: rotate(0) translateY(-4px); }
+  .g img { width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 2px; }
+  .g figcaption { font-family: var(--font-hand); font-size: 1.25rem; line-height: 1.2; color: #3a2a1a; padding: 8px 4px 12px; }
+
+  .faq h3 { font-size: 1.3rem; }
+  .faq details { border-bottom: 1px solid var(--line); }
+  .faq summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; gap: 14px; padding: 16px 0; font-weight: 600; }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary :global(svg) { color: var(--cyan); flex: none; transition: transform .2s; }
+  .faq details[open] summary :global(svg) { transform: rotate(45deg); color: var(--orange); }
+  .faq p { color: var(--muted); margin: 0 0 16px; }
+
+  .end { display: flex; align-items: center; gap: 22px; flex-wrap: wrap; padding: clamp(24px, 4vw, 40px); border-radius: 24px; background: linear-gradient(90deg, rgba(41,182,255,.12), rgba(255,122,31,.14)); border: 1px solid var(--line-strong); }
+  .end img { width: 88px; height: 88px; border-radius: 50%; object-fit: cover; border: 3px solid var(--orange); }
+  .end > div:nth-child(2) { flex: 1 1 260px; }
+  .end h2 { margin: 0 0 4px; font-size: clamp(1.6rem, 3vw, 2.2rem); }
+  .end p { margin: 0; color: #c5d0e2; }
+</style>

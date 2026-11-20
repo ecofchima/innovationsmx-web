@@ -1,0 +1,75 @@
+---
+import Icon from './Icon.astro';
+import { ui, type Lang } from '../i18n/ui';
+import { postHref, readingTime, formatDate, type Post } from '../lib/blog';
+
+interface Props { post: Post; lang: Lang; fallback?: boolean; variant?: 'card' | 'feature' | 'row' }
+const { post, lang, fallback = false, variant = 'card' } = Astro.props;
+const t = ui[lang];
+const { title, description, date, category, cover } = post.data;
+const otherLang = fallback && post.data.lang !== lang;
+// Each category gets its own tint for the generated cover
+const hues = [[41, 182, 255], [255, 122, 31], [182, 101, 255], [216, 178, 122]];
+const h = hues[[...category].reduce((a, c) => a + c.charCodeAt(0), 0) % hues.length];
+---
+<a class={`pc pc--${variant} reveal`} href={postHref(post)} style={`--tint:${h.join(',')}`}>
+  <div class="cover">
+    {cover ? <img src={cover} alt="" loading="lazy" /> : (
+      <div class="gen" aria-hidden="true">
+        <span class="g-ring"></span>
+        <span class="g-cat">{category}</span>
+        <img class="g-logo" src="/images/logo.webp" alt="" width="64" height="64" loading="lazy" />
+      </div>
+    )}
+  </div>
+  <div class="body">
+    <div class="meta">
+      <span class="cat">{category}</span>
+      {otherLang && <span class="badge badge--orange">{t.inSpanish || 'English'}</span>}
+    </div>
+    <h3>{title}</h3>
+    {variant !== 'row' && description && <p>{description}</p>}
+    <div class="foot">
+      <span>{formatDate(date, lang)} · {readingTime(post)} {t.blog.min}</span>
+      {variant !== 'row' && <span class="go">{t.blog.read} <Icon name="arrow" size={18} /></span>}
+    </div>
+  </div>
+</a>
+
+<style>
+  .pc { display: flex; flex-direction: column; text-decoration: none; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s; }
+  .pc:hover { transform: translateY(-4px); border-color: rgba(var(--tint), 0.55); box-shadow: 0 26px 50px -26px rgba(var(--tint), 0.5); }
+  .cover { aspect-ratio: 16 / 9; overflow: hidden; background: #0a1224; }
+  .cover > img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s; }
+  .pc:hover .cover > img { transform: scale(1.04); }
+  .gen { position: relative; height: 100%; overflow: hidden;
+    background: radial-gradient(120% 90% at 85% 110%, rgba(var(--tint), 0.45), transparent 55%),
+      linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px) 0 0 / 34px 34px,
+      linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px) 0 0 / 34px 34px,
+      linear-gradient(160deg, #0b1630, #050914); }
+  .g-ring { position: absolute; width: 70%; aspect-ratio: 1; right: -18%; bottom: -45%; border-radius: 50%; border: 2px solid rgba(var(--tint), 0.6); box-shadow: 0 0 40px rgba(var(--tint), 0.35), inset 0 0 40px rgba(var(--tint), 0.2); }
+  .g-cat { position: absolute; left: 7%; bottom: 12%; max-width: 70%; font-family: var(--font-display); font-weight: 800; font-size: clamp(1.5rem, 3.4vw, 2.6rem); line-height: 1; color: rgba(255,255,255,.92); text-transform: uppercase; letter-spacing: -0.01em; }
+  .g-logo { position: absolute; top: 8%; left: 7%; width: 44px; height: 44px; border-radius: 50%; opacity: 0.9; }
+  .body { padding: 22px 24px 24px; display: flex; flex-direction: column; flex: 1; }
+  .meta { display: flex; gap: 10px; align-items: center; margin-bottom: 10px; }
+  .cat { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgb(var(--tint)); }
+  h3 { font-size: 1.3rem; margin-bottom: 10px; text-wrap: balance; }
+  p { color: var(--muted); font-size: 1rem; margin-bottom: 18px; }
+  .foot { margin-top: auto; display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 0.9rem; color: var(--muted); }
+  .go { display: inline-flex; align-items: center; gap: 6px; color: var(--cyan); font-weight: 700; }
+
+  /* Featured */
+  .pc--feature { display: grid; grid-template-rows: auto 1fr; }
+  .pc--feature .cover { aspect-ratio: 16 / 8; }
+  .pc--feature .body { padding: 28px 30px 30px; }
+  .pc--feature h3 { font-size: clamp(1.5rem, 2.6vw, 2.05rem); line-height: 1.15; }
+  .pc--feature p { font-family: var(--font-serif); font-size: 1.12rem; line-height: 1.6; }
+
+  /* Row (compact) */
+  .pc--row { flex-direction: row; align-items: stretch; }
+  .pc--row .cover { flex: 0 0 38%; aspect-ratio: auto; min-height: 150px; }
+  .pc--row .g-cat { font-size: 1.05rem; }
+  .pc--row .g-logo { width: 30px; height: 30px; }
+  .pc--row h3 { font-size: 1.12rem; }
+  @media (max-width: 520px) { .pc--row { flex-direction: column; } .pc--row .cover { aspect-ratio: 16 / 9; min-height: 0; } }
+</style>

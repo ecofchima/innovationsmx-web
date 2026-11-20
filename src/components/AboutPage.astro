@@ -1,0 +1,204 @@
+---
+import { render } from 'astro:content';
+import Icon from './Icon.astro';
+import Avatar from './Avatar.astro';
+import { ui, type Lang } from '../i18n/ui';
+import { site, whatsappLink } from '../site.config';
+import { getAbout } from '../lib/blog';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = ui[lang];
+const about = (await getAbout(lang))!;
+const { Content } = await render(about);
+const d = about.data;
+const brand = [
+  { key: 'instagram', name: 'Instagram', handle: site.social.instagramHandle, href: site.social.instagram },
+  { key: 'tiktok', name: 'TikTok', handle: site.social.tiktokHandle, href: site.social.tiktok },
+  { key: 'facebook', name: 'Facebook', handle: 'InnovationsMX', href: site.social.facebook },
+  { key: 'linkedin', name: 'LinkedIn', handle: 'InnovationsMX', href: site.social.linkedin },
+] as const;
+const es = lang === 'es';
+---
+<section class="a-hero">
+  <div class="grid-floor"></div>
+  <div class="container a-grid">
+    <figure class="a-photo">
+      <span class="a-ring" aria-hidden="true"></span>
+      <img src={d.heroPhoto ?? d.photo ?? '/images/logo.webp'} alt={d.name} width="600" height="600" />
+    </figure>
+    <div>
+      <span class="kicker">{t.about.kicker}</span>
+      <h1>{d.name}</h1>
+      <p class="role">{d.role}</p>
+      <p class="lead">{d.intro}</p>
+      <div class="me-links">
+        <a class="btn btn-primary" href={site.personal.linkedin} target="_blank" rel="noopener"><Icon name="linkedin" /> LinkedIn</a>
+        <a class="btn btn-ghost" href={site.personal.instagram} target="_blank" rel="noopener"><Icon name="instagram" /> {site.personal.instagramHandle}</a>
+        <a class="btn btn-ghost" href={site.personal.website} target="_blank" rel="noopener"><Icon name="globe" /> {es ? 'Portafolio' : 'Portfolio'}</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section story-sec">
+  <div class="container story">
+    <div class="prose"><Content /></div>
+  </div>
+</section>
+
+<section class="section moments">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="kicker">{es ? 'Momentos' : 'Moments'}</span>
+      <h2>{es ? 'Un camino que me trajo hasta aquí' : 'The road that brought me here'}</h2>
+    </div>
+    <div class="masonry">
+      {d.gallery.map((g) => (
+        <figure class="m reveal">
+          <img src={g.image} alt={g.caption} loading="lazy" />
+          <figcaption>{g.caption}</figcaption>
+        </figure>
+      ))}
+    </div>
+  </div>
+</section>
+
+<section class="section section--alt">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="kicker">{t.about.highlightsTitle}</span>
+    </div>
+    <ol class="tl">
+      {d.highlights.map((h) => (
+        <li class="reveal">
+          <span class="tl-l">{h.label}</span>
+          <b>{h.title}</b>
+          <p>{h.text}</p>
+        </li>
+      ))}
+    </ol>
+    <div class="lists">
+      <div class="reveal">
+        <h3><Icon name="grad" /> {es ? 'Formación' : 'Education'}</h3>
+        <ul>{d.education.map((x) => <li>{x}</li>)}</ul>
+      </div>
+      <div class="reveal">
+        <h3><Icon name="award" /> {es ? 'Reconocimientos' : 'Recognition'}</h3>
+        <ul>{d.recognitions.map((x) => <li>{x}</li>)}</ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="redes">
+  <div class="container soc-grid">
+    <div>
+      <div class="reveal">
+        <span class="kicker">InnovationsMX</span>
+        <h2>{t.about.socialTitle}</h2>
+        <p class="lead">{t.about.socialSub}</p>
+      </div>
+      <div class="soc-cards">
+        {brand.map((s) => (
+          <a class="soc reveal" href={s.href} target="_blank" rel="noopener">
+            <span class="soc-ic"><Icon name={s.key} size={24} /></span>
+            <span class="soc-txt"><b>{s.name}</b><small>{s.handle} · {t.social.notes[s.key]}</small></span>
+            <Icon name="arrow" size={18} class="soc-go" />
+          </a>
+        ))}
+      </div>
+    </div>
+    <div class="tiktok reveal">
+      {site.featuredTikToks.slice(0, 1).map((id) => (
+        <div class="phone">
+          <div class="ph-bg" aria-hidden="true"><img src="/images/logo.webp" alt="" width="110" height="110" /><span>TikTok · {site.social.tiktokHandle}</span></div>
+          <iframe src={`https://www.tiktok.com/embed/v2/${id}`} title="TikTok · InnovationsMX" loading="lazy" allow="encrypted-media; fullscreen" allowfullscreen></iframe>
+        </div>
+      ))}
+      <a class="watch" href={site.social.tiktok} target="_blank" rel="noopener"><Icon name="tiktok" size={18} /> {t.social.watch}</a>
+    </div>
+  </div>
+</section>
+
+<section class="section end-cta">
+  <div class="container">
+    <div class="box reveal">
+      <div><h2>{t.about.ctaTitle}</h2><p>{t.about.ctaText}</p></div>
+      <div class="btn-row">
+        <a class="btn btn-primary" href={site.contact.calendly} target="_blank" rel="noopener"><Icon name="calendar" /> {t.bookCall}</a>
+        <a class="btn btn-wa" href={whatsappLink(t.whatsappMsg)} target="_blank" rel="noopener"><Icon name="whatsapp" /> {t.whatsapp}</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .a-hero { position: relative; overflow: hidden; margin-top: -72px; padding: calc(72px + clamp(40px, 7vw, 90px)) 0 clamp(50px, 7vw, 90px);
+    background: radial-gradient(600px 400px at 20% 30%, rgba(41,182,255,.15), transparent 70%), radial-gradient(600px 400px at 90% 10%, rgba(255,122,31,.13), transparent 70%); }
+  .a-grid { position: relative; display: grid; grid-template-columns: 0.85fr 1.15fr; gap: clamp(32px, 6vw, 80px); align-items: center; }
+  .a-photo { position: relative; margin: 0; justify-self: center; width: 100%; max-width: 420px; }
+  .a-photo img { position: relative; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; object-position: 60% 50%; border-radius: 28px; }
+  .a-ring { position: absolute; inset: -8px; border-radius: 34px; background: conic-gradient(from 200deg, var(--cyan) 0 45%, var(--orange) 55% 100%); }
+  .moments { background: radial-gradient(800px 400px at 10% 0%, rgba(216,178,122,.1), transparent 70%); }
+  .masonry { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 22px; }
+  .m { margin: 0; padding: 10px 10px 0; background: #f4ece0; border-radius: 6px; box-shadow: 0 18px 36px -20px rgba(0,0,0,.8); }
+  .m:nth-child(3n+1) { transform: rotate(-.8deg); } .m:nth-child(3n+2) { transform: rotate(.7deg); }
+  .m img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; object-position: 50% 35%; border-radius: 2px; }
+  .m figcaption { font-family: var(--font-hand); font-size: 1.3rem; line-height: 1.2; color: #3a2a1a; padding: 8px 4px 12px; }
+  .a-hero h1 { margin-bottom: 8px; }
+  .role { color: var(--orange); font-weight: 600; font-size: 1.1rem; }
+  .a-hero .lead { font-family: var(--font-serif); font-size: clamp(1.2rem, 2vw, 1.4rem); line-height: 1.55; color: #dde4ef; margin-bottom: 28px; }
+  .me-links { display: flex; flex-wrap: wrap; gap: 12px; }
+  @media (max-width: 860px) { .a-grid { grid-template-columns: 1fr; } .a-photo { justify-self: start; max-width: 360px; } }
+
+  .story-sec { padding-top: clamp(40px, 6vw, 70px); }
+  .story { max-width: 760px; }
+
+  .tl { list-style: none; margin: 0 0 56px; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 14px; position: relative; }
+  .tl::before { content: ''; position: absolute; left: 0; right: 0; top: 15px; height: 2px; background: var(--grad); opacity: 0.5; }
+  .tl li { position: relative; padding-top: 44px; }
+  .tl li::before { content: ''; position: absolute; top: 8px; left: 0; width: 16px; height: 16px; border-radius: 50%; background: var(--bg); border: 3px solid var(--cyan); }
+  .tl li:nth-child(even)::before { border-color: var(--orange); }
+  .tl-l { display: block; font-family: var(--font-display); font-weight: 800; font-size: 1.05rem; color: var(--cyan); margin-bottom: 4px; }
+  .tl li:nth-child(even) .tl-l { color: #ffa060; }
+  .tl b { display: block; font-size: 1.08rem; margin-bottom: 6px; }
+  .tl p { margin: 0; color: var(--muted); font-size: 0.95rem; line-height: 1.5; }
+  @media (max-width: 960px) {
+    .tl { grid-template-columns: 1fr; gap: 0; padding-left: 30px; }
+    .tl::before { left: 7px; right: auto; top: 0; bottom: 0; width: 2px; height: auto; background: linear-gradient(var(--cyan), var(--orange)); }
+    .tl li { padding: 0 0 26px; }
+    .tl li::before { top: 4px; left: -30px; }
+  }
+  .lists { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+  .lists > div { padding: 28px; border-radius: var(--radius); background: var(--surface); border: 1px solid var(--line); }
+  .lists h3 { display: flex; align-items: center; gap: 10px; font-size: 1.25rem; }
+  .lists h3 :global(svg) { color: var(--orange); }
+  .lists ul { margin: 0; padding-left: 1.1em; display: grid; gap: 10px; color: #cfd8e8; font-size: 1rem; }
+  .lists li::marker { color: var(--cyan); }
+  @media (max-width: 760px) { .lists { grid-template-columns: 1fr; } }
+
+  .soc-grid { display: grid; grid-template-columns: 1.3fr 0.7fr; gap: clamp(32px, 5vw, 70px); align-items: center; }
+  .soc-grid .lead { margin-bottom: 28px; }
+  .soc-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .soc { display: flex; align-items: center; gap: 14px; padding: 16px 18px; border-radius: var(--radius); text-decoration: none; background: var(--surface); border: 1px solid var(--line); transition: border-color .2s, transform .2s; }
+  .soc:hover { border-color: var(--cyan); transform: translateY(-3px); }
+  .soc-ic { width: 48px; height: 48px; border-radius: 14px; display: grid; place-items: center; flex: none; background: #12203a; border: 1px solid var(--line-strong); }
+  .soc-txt { flex: 1; min-width: 0; }
+  .soc-txt b { display: block; font-family: var(--font-display); font-size: 1.1rem; }
+  .soc-txt small { color: var(--muted); font-size: 0.9rem; }
+  .soc :global(.soc-go) { color: var(--cyan); flex: none; }
+  .tiktok { display: grid; justify-items: center; gap: 14px; }
+  .phone { position: relative; width: 100%; max-width: 320px; aspect-ratio: 9 / 17.5; border-radius: 28px; padding: 6px; background: conic-gradient(from 180deg, var(--cyan) 0 50%, var(--orange) 50% 100%); box-shadow: 0 30px 60px -20px rgba(41,182,255,.4); }
+  .ph-bg { position: absolute; inset: 6px; border-radius: 22px; background: #050914; display: grid; place-content: center; justify-items: center; gap: 14px; color: var(--muted); font-weight: 600; }
+  .ph-bg img { width: 110px; border-radius: 50%; }
+  .phone iframe { position: relative; width: 100%; height: 100%; border: 0; border-radius: 22px; display: block; }
+  .watch { display: inline-flex; align-items: center; gap: 8px; color: var(--muted); font-weight: 600; text-decoration: none; }
+  @media (max-width: 900px) { .soc-grid { grid-template-columns: 1fr; } }
+  @media (max-width: 560px) { .soc-cards { grid-template-columns: 1fr; } }
+
+  .end-cta { padding-top: 0; }
+  .box { display: flex; justify-content: space-between; align-items: center; gap: 24px; flex-wrap: wrap; padding: clamp(28px, 4vw, 44px); border-radius: 24px; background: linear-gradient(90deg, rgba(41,182,255,.12), rgba(255,122,31,.12)); border: 1px solid var(--line-strong); }
+  .box h2 { font-size: clamp(1.6rem, 3vw, 2.2rem); margin-bottom: 6px; }
+  .box p { margin: 0; color: #c5d0e2; }
+</style>
